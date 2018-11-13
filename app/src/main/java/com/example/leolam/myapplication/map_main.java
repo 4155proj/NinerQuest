@@ -27,7 +27,6 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.location.LocationServices;
 
 
 
@@ -155,7 +154,7 @@ public class map_main extends AppCompatActivity
         //LatLng gilgit = new LatLng(35.307076, -80.735170); UNC Charlotte location
         mMap.addMarker(new MarkerOptions().position(gilgit).title(""));
         location = (Location) lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        LatLng gilgit = new LatLng(location.getLongitude(), location.getLatitude());
+        gilgit = new LatLng(location.getLongitude(), location.getLatitude());
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(gilgit, 15.0f));
     }
 

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "490713751095",
+    "firebase_url": "https://ninerquest-app.firebaseio.com",
+    "project_id": "ninerquest-app",
+    "storage_bucket": "ninerquest-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490713751095:android:e90f4943531acf06",
+        "android_client_info": {
+          "package_name": "com.example.leolam.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "490713751095-rh97do2uetokc7rt88o0q08lljfo0g1h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.leolam.myapplication",
+            "certificate_hash": "b50335d0962f874ede2036869c7ae44cba8ba701"
+          }
+        },
+        {
+          "client_id": "490713751095-8bc08tq63hrdf1vo4pl3l8ga238vq8f2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVl9ib3sM2HGz_0s6omG8WrcsseN_xDNw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "490713751095-8bc08tq63hrdf1vo4pl3l8ga238vq8f2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
