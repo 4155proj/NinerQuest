@@ -1,4 +1,4 @@
-package com.example.leolam.myapplication;
+package com.example.leolam.myapplication.Activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,7 +13,9 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.os.Bundle;
 
-public class Create_events extends AppCompatActivity {
+import com.example.leolam.myapplication.R;
+
+public class CreateEventsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

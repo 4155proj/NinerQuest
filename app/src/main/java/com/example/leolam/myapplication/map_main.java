@@ -15,12 +15,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import android.content.Intent;
 
+import com.example.leolam.myapplication.Activities.ContactActivity;
+import com.example.leolam.myapplication.Activities.EventsActivity;
+import com.example.leolam.myapplication.Activities.HomeActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -115,19 +116,19 @@ public class map_main extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            //Home Button to Home page
-                    Intent signup = new Intent(map_main.this, Home.class);
+            //HomeActivity Button to HomeActivity page
+                    Intent signup = new Intent(map_main.this, HomeActivity.class);
                     startActivity(signup);
         } else if (id == R.id.nav_roam) {
 
         } else if (id == R.id.nav_events) {
-            //Events Button to Events Page
-                    Intent signup = new Intent(map_main.this, Events.class);
+            //EventsActivity Button to EventsActivity Page
+                    Intent signup = new Intent(map_main.this, EventsActivity.class);
                     startActivity(signup);
 
         } else if (id == R.id.nav_contact) {
-            //Contact Button to Contact Page
-                    Intent signup = new Intent(map_main.this, Contact.class);
+            //ContactActivity Button to ContactActivity Page
+                    Intent signup = new Intent(map_main.this, ContactActivity.class);
                     startActivity(signup);
         }
 

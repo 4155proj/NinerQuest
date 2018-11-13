@@ -1,21 +1,21 @@
-package com.example.leolam.myapplication;
+package com.example.leolam.myapplication.Activities;
 
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.icu.util.Freezable;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-public class Home extends AppCompatActivity {
+import com.example.leolam.myapplication.R;
+import com.example.leolam.myapplication.map_main;
+
+public class HomeActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 55;
     static final int REQUEST_IMAGE_CAPTURE = 98;
@@ -39,7 +39,7 @@ public class Home extends AppCompatActivity {
                 //Intent signup = new Intent(MainActivity.this, AR_Activity.class);
                 //startActivity(signup);
 
-                ActivityCompat.requestPermissions(Home.this,
+                ActivityCompat.requestPermissions(HomeActivity.this,
                         new String[]{Manifest.permission.CAMERA},
                         MY_PERMISSIONS_REQUEST_CAMERA);
             }
@@ -51,25 +51,25 @@ public class Home extends AppCompatActivity {
         Navigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent signup = new Intent(Home.this, Building_List.class);
+                Intent signup = new Intent(HomeActivity.this, BuildingListActivity.class);
                 startActivity(signup);
             }
         });
 
-        //Events Button to Events Page
+        //EventsActivity Button to EventsActivity Page
         Events.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent signup = new Intent(Home.this, Events.class);
+                Intent signup = new Intent(HomeActivity.this, EventsActivity.class);
                 startActivity(signup);
             }
         });
 
-        //Contact Button to Contact Page
+        //ContactActivity Button to ContactActivity Page
         Contact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent signup = new Intent(Home.this, Contact.class);
+                Intent signup = new Intent(HomeActivity.this, ContactActivity.class);
                 startActivity(signup);
             }
         });
@@ -78,7 +78,7 @@ public class Home extends AppCompatActivity {
         Map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent signup = new Intent(Home.this, map_main.class);
+                Intent signup = new Intent(HomeActivity.this, map_main.class);
                 startActivity(signup);
             }
         });

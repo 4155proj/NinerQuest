@@ -1,6 +1,5 @@
-package com.example.leolam.myapplication;
+package com.example.leolam.myapplication.Activities;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,16 +7,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
 
+import com.example.leolam.myapplication.Maps_Activity;
+import com.example.leolam.myapplication.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,21 +22,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
-import static com.example.leolam.myapplication.Home.MY_PERMISSIONS_REQUEST_CAMERA;
-
-
-public class Building_List extends AppCompatActivity {
+public class BuildingListActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 55;
     static final int REQUEST_IMAGE_CAPTURE = 98;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference getmDatabase = database.getReference();
+
+    //TODO: Consider using a ListView instead to populate buildings. Ex gif: https://cdn.journaldev.com/wp-content/uploads/2016/03/android-custom-listview-output.gif
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +48,8 @@ public class Building_List extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.M)
             public void onClick(View view) {
 
-                //ActivityCompat.requestPermissions(Building_List.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
-                Intent signup = new Intent(Building_List.this, Maps_Activity.class);
+                //ActivityCompat.requestPermissions(BuildingListActivity.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+                Intent signup = new Intent(BuildingListActivity.this, Maps_Activity.class);
                 startActivity(signup);
             }
 
@@ -75,7 +69,7 @@ public class Building_List extends AppCompatActivity {
 
                 Spinner spinner = (Spinner) findViewById(R.id.building_list_spinner);
 // Create an ArrayAdapter using the string array and a default spinner layout
-                ArrayAdapter<String> addressAdapter = new ArrayAdapter<String>(Building_List.this, android.R.layout.simple_spinner_item, BuildingList);
+                ArrayAdapter<String> addressAdapter = new ArrayAdapter<String>(BuildingListActivity.this, android.R.layout.simple_spinner_item, BuildingList);
 // Specify the layout to use when the list of choices appears
                 addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner

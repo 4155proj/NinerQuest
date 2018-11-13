@@ -39,6 +39,7 @@ import java.util.List;
 
 import static android.os.Build.*;
 
+//TODO: Remove unneeded comments
 public class Maps_Activity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12;
