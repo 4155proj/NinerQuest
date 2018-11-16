@@ -92,34 +92,31 @@ public class BuildingListActivity extends AppCompatActivity {
 
                 for (DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
                     String buildingName = addressSnapshot.child("name").getValue(String.class);
+                    Double latitude = addressSnapshot.child("lat").getValue(Double.class);
+                    Double longitude = addressSnapshot.child("lon").getValue(Double.class);
+
 
                     if (buildingName != null) {
                         BuildingList.add(buildingName);
                     }
-                }
-
-               /* for (DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
-                    Double latitude = addressSnapshot.child("lat").getValue(Double.class);
 
                     if (latitude != null) {
                         Lat.add(latitude);
                     }
-                }
-
-                for (DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
-                    Double longitude = addressSnapshot.child("lon").getValue(Double.class);
 
                     if (longitude != null) {
                         Long.add(longitude);
                     }
-                }*/
+
+                }
+
 
 
                // Spinner spinner = (Spinner) findViewById(R.id.building_list_spinner);
 // Create an ArrayAdapter using the string array and a default spinner layout
                 ArrayAdapter<String> addressAdapter = new ArrayAdapter<String>(BuildingListActivity.this, android.R.layout.simple_spinner_item, BuildingList);
-                //ArrayAdapter<Double> addressAdapter2 = new ArrayAdapter<Double>(BuildingListActivity.this, android.R.layout.simple_spinner_item, Lat);
-                //ArrayAdapter<Double> addressAdapter3 = new ArrayAdapter<Double>(BuildingListActivity.this, android.R.layout.simple_spinner_item, Long);
+                final ArrayAdapter<Double> addressAdapter2 = new ArrayAdapter<Double>(BuildingListActivity.this, android.R.layout.simple_list_item_1, Lat);
+                final ArrayAdapter<Double> addressAdapter3 = new ArrayAdapter<Double>(BuildingListActivity.this, android.R.layout.simple_list_item_2, Long);
 
 // Specify the layout to use when the list of choices appears
                 //addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -134,6 +131,8 @@ public class BuildingListActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                         view.setSelected(true);
                         String selectedFromList = (String)(listview.getItemAtPosition(position));
+                        Double selectedLat = (Double) (addressAdapter2.getItem(position));
+                        Double selectedLong = (Double) (addressAdapter3.getItem(position));
                     }
 
             });
