@@ -11,15 +11,10 @@
         <item>Others</item>
     </string-array>
 
-    <string-array name="building_list_array">
-        <item>Friday</item>
-        <item>Colvard</item>
-        <item>Fretwell</item>
-        <item>Student Union</item>
-        <item>Woordward</item>
-        <item>Belk Gym</item>
-        <item>Rowe</item>
-        <item>Denny</item>
+    <string-array name="event_list_array">
+        <item>Pizza Sliding contest</item>
+        <item>SU Movie Night!</item>
+
     </string-array>
     <string name="title_activity_create_events">Create Events</string>
 
