@@ -8,11 +8,14 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.leolam.myapplication.Maps_Activity;
 import com.example.leolam.myapplication.R;
@@ -22,6 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +35,9 @@ public class BuildingListActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 55;
     static final int REQUEST_IMAGE_CAPTURE = 98;
-    private ListView listView;
+
+    private ListView listview;
+
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference getmDatabase = database.getReference();
@@ -57,27 +64,84 @@ public class BuildingListActivity extends AppCompatActivity {
 
         });
 
+        /* getmDatabase.child("Building_list").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                final List<String> BuildingList = new ArrayList<String>();
+                final List<Double> Lat = new ArrayList<Double>();
+                final List<Double> Long = new ArrayList<Double>();
+
+                listview = (ListView) findViewById(R.id.listview);
+
+                    for (DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
+                    String buildingName = addressSnapshot.child("name").getValue(String.class);
+
+                    if (buildingName.equals("Atkins")) {
+                        double latitude = addressSnapshot.child("lat").getValue(Double.class);
+                    }
+                } */
+
+
+
         getmDatabase.child("Building_list").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 final List<String> BuildingList = new ArrayList<String>();
+                final List<Double> Lat = new ArrayList<Double>();
+                final List<Double> Long = new ArrayList<Double>();
+
+                listview = (ListView) findViewById(R.id.listview);
 
                 for (DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
                     String buildingName = addressSnapshot.child("name").getValue(String.class);
+
                     if (buildingName != null) {
                         BuildingList.add(buildingName);
                     }
                 }
 
-                Spinner spinner = (Spinner) findViewById(R.id.building_list_spinner);
+               /* for (DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
+                    Double latitude = addressSnapshot.child("lat").getValue(Double.class);
+
+                    if (latitude != null) {
+                        Lat.add(latitude);
+                    }
+                }
+
+                for (DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
+                    Double longitude = addressSnapshot.child("lon").getValue(Double.class);
+
+                    if (longitude != null) {
+                        Long.add(longitude);
+                    }
+                }*/
+
+
+               // Spinner spinner = (Spinner) findViewById(R.id.building_list_spinner);
 // Create an ArrayAdapter using the string array and a default spinner layout
                 ArrayAdapter<String> addressAdapter = new ArrayAdapter<String>(BuildingListActivity.this, android.R.layout.simple_spinner_item, BuildingList);
-// Specify the layout to use when the list of choices appears
-                addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
-                spinner.setAdapter(addressAdapter);
+                //ArrayAdapter<Double> addressAdapter2 = new ArrayAdapter<Double>(BuildingListActivity.this, android.R.layout.simple_spinner_item, Lat);
+                //ArrayAdapter<Double> addressAdapter3 = new ArrayAdapter<Double>(BuildingListActivity.this, android.R.layout.simple_spinner_item, Long);
 
-                
+// Specify the layout to use when the list of choices appears
+                //addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+              
+                //spinner.setAdapter(addressAdapter);
+
+
+                listview.setAdapter(addressAdapter);
+
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                        view.setSelected(true);
+                        String selectedFromList = (String)(listview.getItemAtPosition(position));
+                    }
+
+            });
+                //spinner.setAdapter(addressAdapter);
+
             }
 
             @Override
@@ -85,6 +149,7 @@ public class BuildingListActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     //Ask Permission to Use Camera
