@@ -14,10 +14,12 @@ import android.widget.ImageView;
 
 import com.example.leolam.myapplication.R;
 import com.example.leolam.myapplication.map_main;
+import com.google.ar.sceneform.ux.ArFragment;
 
 public class HomeActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 55;
+    private ArFragment fragment;
     static final int REQUEST_IMAGE_CAPTURE = 98;
     // THIS IS A TEST TO SEE IF MERGE WORKS OK!
     @Override
@@ -29,6 +31,9 @@ public class HomeActivity extends AppCompatActivity {
         ImageView Contact = findViewById(R.id.imageView8);
         ImageView Map = findViewById(R.id.imageView6);
         ImageView Navigation = findViewById(R.id.imageView2);
+        fragment = (ArFragment)
+               getSupportFragmentManager().findFragmentById(R.id.sceneform_fragment);
+
 
         //Free Roam Button to AR Page
         Free_Roam.setOnClickListener(new View.OnClickListener() {
@@ -36,15 +41,17 @@ public class HomeActivity extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.M)
             public void onClick(View view) {
 
-                //Intent signup = new Intent(MainActivity.this, AR_Activity.class);
-                //startActivity(signup);
+                Intent signup = new Intent(HomeActivity.this, AR_Page_Activity.class);
+                startActivity(signup);
 
-                ActivityCompat.requestPermissions(HomeActivity.this,
-                        new String[]{Manifest.permission.CAMERA},
-                        MY_PERMISSIONS_REQUEST_CAMERA);
+                //ActivityCompat.requestPermissions(HomeActivity.this,
+                       //new String[]{Manifest.permission.CAMERA},
+                       // MY_PERMISSIONS_REQUEST_CAMERA);
             }
 
         });
+
+
 
 
         //Navigation Button to Building List
@@ -82,6 +89,8 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(signup);
             }
         });
+
+
     }
 
     //Ask Permission to Use Camera

@@ -35,7 +35,9 @@ public class BuildingListActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 55;
     static final int REQUEST_IMAGE_CAPTURE = 98;
+
     private ListView listview;
+
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference getmDatabase = database.getReference();
@@ -121,6 +123,7 @@ public class BuildingListActivity extends AppCompatActivity {
 // Specify the layout to use when the list of choices appears
                 //addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
+              
                 //spinner.setAdapter(addressAdapter);
 
 
@@ -136,6 +139,7 @@ public class BuildingListActivity extends AppCompatActivity {
                     }
 
             });
+                //spinner.setAdapter(addressAdapter);
 
             }
 
