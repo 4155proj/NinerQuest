@@ -31,8 +31,8 @@ public class HomeActivity extends AppCompatActivity {
         ImageView Contact = findViewById(R.id.imageView8);
         ImageView Map = findViewById(R.id.imageView6);
         ImageView Navigation = findViewById(R.id.imageView2);
-        fragment = (ArFragment)
-               getSupportFragmentManager().findFragmentById(R.id.sceneform_fragment);
+        //fragment = (ArFragment)
+              // getSupportFragmentManager().findFragmentById(R.id.sceneform_fragment);
 
 
         //Free Roam Button to AR Page
