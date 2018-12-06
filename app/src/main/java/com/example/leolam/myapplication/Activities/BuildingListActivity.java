@@ -1,5 +1,6 @@
 package com.example.leolam.myapplication.Activities;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -7,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +37,8 @@ public class BuildingListActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 55;
     static final int REQUEST_IMAGE_CAPTURE = 98;
+    private double selectedLat = 0.0;
+    private double selectedLong = 0.0;
 
     private ListView listview;
 
@@ -42,7 +46,6 @@ public class BuildingListActivity extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference getmDatabase = database.getReference();
 
-    //TODO: Consider using a ListView instead to populate buildings. Ex gif: https://cdn.journaldev.com/wp-content/uploads/2016/03/android-custom-listview-output.gif
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,31 +60,14 @@ public class BuildingListActivity extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.M)
             public void onClick(View view) {
 
-                //ActivityCompat.requestPermissions(BuildingListActivity.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
-                Intent signup = new Intent(BuildingListActivity.this, Maps_Activity.class);
+                ActivityCompat.requestPermissions(BuildingListActivity.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+                Intent signup = new Intent(BuildingListActivity.this, AR_Page_Activity.class);
+                signup.putExtra("LATITUDE", selectedLat);
+                signup.putExtra("LONGITUDE", selectedLong);
                 startActivity(signup);
             }
 
         });
-
-        /* getmDatabase.child("Building_list").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                final List<String> BuildingList = new ArrayList<String>();
-                final List<Double> Lat = new ArrayList<Double>();
-                final List<Double> Long = new ArrayList<Double>();
-
-                listview = (ListView) findViewById(R.id.listview);
-
-                    for (DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
-                    String buildingName = addressSnapshot.child("name").getValue(String.class);
-
-                    if (buildingName.equals("Atkins")) {
-                        double latitude = addressSnapshot.child("lat").getValue(Double.class);
-                    }
-                } */
-
-
 
         getmDatabase.child("Building_list").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -111,21 +97,10 @@ public class BuildingListActivity extends AppCompatActivity {
                     }
 
                 }
-
-
-
-               // Spinner spinner = (Spinner) findViewById(R.id.building_list_spinner);
-// Create an ArrayAdapter using the string array and a default spinner layout
+                // Create an ArrayAdapter using the string array and a default spinner layout
                 ArrayAdapter<String> addressAdapter = new ArrayAdapter<String>(BuildingListActivity.this, android.R.layout.simple_spinner_item, BuildingList);
                 final ArrayAdapter<Double> addressAdapter2 = new ArrayAdapter<Double>(BuildingListActivity.this, android.R.layout.simple_list_item_1, Lat);
                 final ArrayAdapter<Double> addressAdapter3 = new ArrayAdapter<Double>(BuildingListActivity.this, android.R.layout.simple_list_item_2, Long);
-
-// Specify the layout to use when the list of choices appears
-                //addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
-              
-                //spinner.setAdapter(addressAdapter);
-
 
                 listview.setAdapter(addressAdapter);
 
@@ -134,13 +109,11 @@ public class BuildingListActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                         view.setSelected(true);
                         String selectedFromList = (String)(listview.getItemAtPosition(position));
-                        Double selectedLat = (Double) (addressAdapter2.getItem(position));
-                        Double selectedLong = (Double) (addressAdapter3.getItem(position));
+                        selectedLat = (Double) (addressAdapter2.getItem(position));
+                        selectedLong = (Double) (addressAdapter3.getItem(position));
                     }
 
-            });
-                //spinner.setAdapter(addressAdapter);
-
+                });
             }
 
             @Override
@@ -179,3 +152,4 @@ public class BuildingListActivity extends AppCompatActivity {
     }
 
 }
+
