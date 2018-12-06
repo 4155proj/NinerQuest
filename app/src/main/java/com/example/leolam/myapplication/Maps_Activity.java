@@ -73,13 +73,19 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
             location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
         LatLng origin = new LatLng(location.getLatitude(), location.getLongitude());
-        LatLng dest = new LatLng(35.312662, -80.741965);
+        Double destLat = getIntent().getDoubleExtra("LATITUDE",0);
+        Double destLong = getIntent().getDoubleExtra("LONGITUDE",0);
+
+        //LatLng origin = new LatLng(35.307076, -80.735170);
+        LatLng dest = new LatLng(destLat, destLong);
         if (markerPoints.size() > 1) {
             markerPoints.clear();
             mMap.clear();
         }
         markerPoints.add(origin);
         markerPoints.add(dest);
+
+        //
 
         //LatLng gilgit = new LatLng(35.307076, -80.735170);
         //mMap.addMarker(new MarkerOptions().position(gilgit).title(""));
@@ -101,20 +107,13 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
 
             // Getting URL to the Google Directions API=
             String url = getDirectionsUrl(origin, dest);
-           //String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+origin,dest + "&key=" + MY_API_KEY;
+            //String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+origin,dest + "&key=" + MY_API_KEY;
 
             DownloadTask downloadTask = new DownloadTask();
 
             // Start downloading json data from Google Directions API
             downloadTask.execute(url);
         }
-        /*PolylineOptions poly = new PolylineOptions()
-                .addAll(markerPoints)
-                .color(Color.BLUE)
-                .width(5)
-                .visible(true)
-                .zIndex(30);
-        mMap.addPolyline(poly);*/
     }
 
 
@@ -251,6 +250,7 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
                 sb.append(line);
             }
 
+            data = sb.toString();
             data = sb.toString();
 
             br.close();
