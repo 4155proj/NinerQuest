@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -65,6 +66,10 @@ public class LocationActivity extends AppCompatActivity {
     // Our ARCore-Location scene
     private LocationScene locationScene;
 
+    double destLat;
+    double destLong;
+    String buildName;
+
 
     @Override
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -73,6 +78,18 @@ public class LocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sceneform);
         arSceneView = findViewById(R.id.ar_scene_view);
+        destLat = getIntent().getDoubleExtra("LATITUDE", 0.0);
+        destLong = getIntent().getDoubleExtra("LONGITUDE", 0.0);
+        buildName = getIntent().getStringExtra("BuildingName");
+        Log.d("TEST", "Name: " + buildName + " Lat: " + destLat + " Long: " + destLong );
+
+        if(buildName == null){
+            buildName = "Atkins";
+            destLong = -80.732124;
+            destLat = 35.3057018;
+        }
+
+        Log.d("TEST", "UPDATE Name: " + buildName + " Lat: " + destLat + " Long: " + destLong );
 
         // Build a renderable from a 2D View.
         CompletableFuture<ViewRenderable> exampleLayout =
@@ -131,11 +148,12 @@ public class LocationActivity extends AppCompatActivity {
                                 // Now lets create our location markers.
                                 // First, a layout
                                 LocationMarker layoutLocationMarker = new LocationMarker(
-                                        -80.732124,
-                                        35.3057018,
+                                        destLong,
+                                        destLat,
                                         getExampleView()
                                 );
 
+                                Log.d("TEST", "UPDATE2 Name: " + buildName + " Lat: " + destLat + " Long: " + destLong );
                                 // An example "onRender" event, called every frame
                                 // Updates the layout with the markers distance
                                 layoutLocationMarker.setRenderEvent(new LocationNodeRender() {
@@ -143,7 +161,7 @@ public class LocationActivity extends AppCompatActivity {
                                     public void render(LocationNode node) {
                                         View eView = exampleLayoutRenderable.getView();
                                         TextView distanceTextView = eView.findViewById(R.id.textView2);
-                                        distanceTextView.setText(node.getDistance() + "M");
+                                        distanceTextView.setText(buildName + "   Distance: " + node.getDistance() + "M");
                                     }
                                 });
                                 // Adding the marker
@@ -152,7 +170,7 @@ public class LocationActivity extends AppCompatActivity {
                                 // Adding a simple location marker of a 3D model
                                 locationScene.mLocationMarkers.add(
                                         new LocationMarker(
-                                                -80.732129,
+                                                -80.732124,
                                                 35.3057020,
                                                 getAndy()));
                             }
