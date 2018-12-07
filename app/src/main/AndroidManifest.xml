@@ -48,6 +48,7 @@
         </activity>
         <activity android:name=".Activities.EventsActivity" />
         <activity android:name=".Activities.ContactActivity" />
+        <activity android:name=".SceneFormExample.LocationActivity" />
         <activity android:name=".Maps_Activity"/>
         <activity
             android:name=".Activities.CreateEventsActivity"

@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 
 
 import com.example.leolam.myapplication.DirectionsJSONParser;
-import com.example.leolam.myapplication.R;
+
 
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Frame;
@@ -83,12 +83,12 @@ public class AR_Page_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ar__page);
+        //setContentView(R.layout.activity_ar__page);
 
         //rSceneView = findViewById(R.id.ar_scene_view);
 
-        fragment = (ArFragment)
-                getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
+        //fragment = (ArFragment)
+        //getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
 
 /*
         Node node = new Node();
@@ -116,39 +116,39 @@ public class AR_Page_Activity extends AppCompatActivity {
         CompletableFuture<ModelRenderable> sphere = ModelRenderable.builder()
                 .setSource(this, Uri.parse("sphere.sfb"))
                 .build();
-
-
-        CompletableFuture.allOf(sphere)
-                .handle(
-                        (notUsed, throwable) ->
-                        {
-                            if (throwable != null) {
-                                DemoUtils.displayError(this, "Unable to load renderables", throwable);
-                                return null;
-                            }
-
-                            try {
-                                sphereRenderable = sphere.get();
-
-                            } catch (InterruptedException | ExecutionException ex) {
-                                DemoUtils.displayError(this, "Unable to load renderables", ex);
-                            }
-                            return null;
-                        });
-*/
-
-
-        fragment.getArSceneView().getScene().addOnUpdateListener(frameTime -> {
-            fragment.onUpdate(frameTime);
-            onUpdate();
-        });
-
-
-        MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.RED))
-                .thenAccept(
-                        material -> {
-                            redSphereRenderable =
-                                    ShapeFactory.makeSphere(0.1f, new Vector3(0.0f, 0.15f, 0.0f), material); });
+//
+//
+//        CompletableFuture.allOf(sphere)
+//                .handle(
+//                        (notUsed, throwable) ->
+//                        {
+//                            if (throwable != null) {
+//                                DemoUtils.displayError(this, "Unable to load renderables", throwable);
+//                                return null;
+//                            }
+//
+//                            try {
+//                                sphereRenderable = sphere.get();
+//
+//                            } catch (InterruptedException | ExecutionException ex) {
+//                                DemoUtils.displayError(this, "Unable to load renderables", ex);
+//                            }
+//                            return null;
+//                        });
+//*/
+//
+//
+//        fragment.getArSceneView().getScene().addOnUpdateListener(frameTime -> {
+//            fragment.onUpdate(frameTime);
+//            onUpdate();
+//        });
+//
+//
+//        MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.RED))
+//                .thenAccept(
+//                        material -> {
+//                            redSphereRenderable =
+//                                    ShapeFactory.makeSphere(0.1f, new Vector3(0.0f, 0.15f, 0.0f), material); });
 
         /*
         arSceneView
@@ -197,176 +197,174 @@ public class AR_Page_Activity extends AppCompatActivity {
 */
 
 
-        Node node = new Node();
+//        Node node = new Node();
+//
+//        ModelRenderable.builder()
+//                .setSource(this, Uri.parse("sphere.sfb"))
+//                .build()
+//                .thenAccept(renderable -> redSphereRenderable = renderable)
+//                .exceptionally(
+//                        throwable -> {
+//                            Log.e(TAG, "Unable to load Renderable.", throwable);
+//                            node.setRenderable(sphereRenderable);
+//                            node.setLocalPosition(new Vector3(0.5f, 0f, 0f));
+//                            return null;
+//                        });
+//
+//
+//        node.setParent(fragment.getArSceneView().getScene());
+//        node.setRenderable(sphereRenderable);
+//        node.setLocalPosition(new Vector3(0.5f, 0f, 0f));
+//
+//
+//        initializeGallery();
+//
+//    }
+//
+//
+//
+//    private void onUpdate() {
+//        boolean trackingChanged = updateTracking();
+//        View contentView = findViewById(android.R.id.content);
+//        if (trackingChanged) {
+//            if (isTracking) {
+//                contentView.getOverlay().add(pointer);
+//            } else {
+//                contentView.getOverlay().remove(pointer);
+//            }
+//            contentView.invalidate();
+//        }
+//
+//        if (isTracking) {
+//            boolean hitTestChanged = updateHitTest();
+//            if (hitTestChanged) {
+//                pointer.setEnabled(isHitting);
+//                contentView.invalidate();
+//            }
+//        }
+//    }
+//
+//    private boolean updateTracking() {
+//        Frame frame = fragment.getArSceneView().getArFrame();
+//        boolean wasTracking = isTracking;
+//        isTracking = frame != null &&
+//                frame.getCamera().getTrackingState() == TrackingState.TRACKING;
+//        return isTracking != wasTracking;
+//    }
+//
+//    private boolean updateHitTest() {
+//        Frame frame = fragment.getArSceneView().getArFrame();
+//        android.graphics.Point pt = getScreenCenter();
+//        List<HitResult> hits;
+//        boolean wasHitting = isHitting;
+//        isHitting = false;
+//        if (frame != null) {
+//            hits = frame.hitTest(pt.x, pt.y);
+//            for (HitResult hit : hits) {
+//                Trackable trackable = hit.getTrackable();
+//                if (trackable instanceof Plane &&
+//                        ((Plane) trackable).isPoseInPolygon(hit.getHitPose())) {
+//                    isHitting = true;
+//                    break;
+//                }
+//            }
+//        }
+//        return wasHitting != isHitting;
+//    }
+//
+//    private android.graphics.Point getScreenCenter() {
+//        View vw = findViewById(android.R.id.content);
+//        return new android.graphics.Point(vw.getWidth()/2, vw.getHeight()/2);
+//    }
+//
+//
+//    public boolean isEnabled() {
+//        return enabled;
+//    }
+//
+//    public void setEnabled(boolean enabled) {
+//        this.enabled = enabled;
+//    }
+//
+//
+//    private void initializeGallery() {
+//        LinearLayout gallery = findViewById(R.id.gallery_layout);
+//
+//        ImageView atkins = new ImageView(this);
+//        atkins.setImageResource(R.drawable.atkinsuncsign);
+//        atkins.setContentDescription("atkins");
+//        atkins.setOnClickListener(view ->{addObject(Uri.parse("AtkinsSign.sfb"));});
+//        gallery.addView(atkins);
+//
+//        ImageView cone = new ImageView(this);
+//        cone.setImageResource(R.drawable.coneuncsign);
+//        cone.setContentDescription("cone");
+//        cone.setOnClickListener(view ->{addObject(Uri.parse("ConeSign.sfb"));});
+//        gallery.addView(cone);
+//
+//        ImageView sac = new ImageView(this);
+//        sac.setImageResource(R.drawable.sacuncsign);
+//        sac.setContentDescription("sac");
+//        sac.setOnClickListener(view ->{addObject(Uri.parse("SACsign.sfb"));});
+//        gallery.addView(sac);
+//
+//
+//        ImageView igloo = new ImageView(this);
+//        igloo.setImageResource(R.drawable.igloo_thumb);
+//        igloo.setContentDescription("igloo");
+//        igloo.setOnClickListener(view ->{addObject(Uri.parse("igloo.sfb"));});
+//        gallery.addView(igloo);
+//
+//        ImageView sphere = new ImageView(this);
+//        sphere.setImageResource(R.drawable.yellowballs);
+//        sphere.setContentDescription("sphere");
+//        sphere.setOnClickListener(view ->{addObject(Uri.parse("sphere.sfb"));});
+//        gallery.addView(sphere);
+//    }
+//
+//    private void addObject(Uri model) {
+//        Frame frame = fragment.getArSceneView().getArFrame();
+//        android.graphics.Point pt = getScreenCenter();
+//        List<HitResult> hits;
+//        if (frame != null) {
+//            hits = frame.hitTest(pt.x, pt.y);
+//            for (HitResult hit : hits) {
+//                Trackable trackable = hit.getTrackable();
+//                if (trackable instanceof Plane &&
+//                        ((Plane) trackable).isPoseInPolygon(hit.getHitPose())) {
+//                    placeObject(fragment, hit.createAnchor(), model);
+//                    break;
+//
+//                }
+//            }
+//        }
+//    }
+//
+//    private void placeObject(ArFragment fragment, Anchor anchor, Uri model) {
+//        CompletableFuture<Void> renderableFuture =
+//                ModelRenderable.builder()
+//                        .setSource(fragment.getContext(), model)
+//                        .build()
+//                        .thenAccept(renderable -> addNodeToScene(fragment, anchor, renderable))
+//                        .exceptionally((throwable -> {
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                            builder.setMessage(throwable.getMessage())
+//                                    .setTitle("Codelab error!");
+//                            AlertDialog dialog = builder.create();
+//                            dialog.show();
+//                            return null;
+//                        }));
+//    }
+//
+//    private void addNodeToScene(ArFragment fragment, Anchor anchor, Renderable renderable) {
+//        AnchorNode anchorNode = new AnchorNode(anchor);
+//        TransformableNode node = new TransformableNode(fragment.getTransformationSystem());
+//        node.setRenderable(renderable);
+//        node.setParent(anchorNode);
+//        fragment.getArSceneView().getScene().addChild(anchorNode);
+//        node.select();
+//    }
 
-        ModelRenderable.builder()
-                .setSource(this, Uri.parse("sphere.sfb"))
-                .build()
-                .thenAccept(renderable -> redSphereRenderable = renderable)
-                .exceptionally(
-                        throwable -> {
-                            Log.e(TAG, "Unable to load Renderable.", throwable);
-                            node.setRenderable(sphereRenderable);
-                            node.setLocalPosition(new Vector3(0.5f, 0f, 0f));
-                            return null;
-                        });
-
-
-        node.setParent(fragment.getArSceneView().getScene());
-        node.setRenderable(sphereRenderable);
-        node.setLocalPosition(new Vector3(0.5f, 0f, 0f));
-
-
-        initializeGallery();
-
-    }
-
-
-
-    private void onUpdate() {
-        boolean trackingChanged = updateTracking();
-        View contentView = findViewById(android.R.id.content);
-        if (trackingChanged) {
-            if (isTracking) {
-                contentView.getOverlay().add(pointer);
-            } else {
-                contentView.getOverlay().remove(pointer);
-            }
-            contentView.invalidate();
-        }
-
-        if (isTracking) {
-            boolean hitTestChanged = updateHitTest();
-            if (hitTestChanged) {
-                pointer.setEnabled(isHitting);
-                contentView.invalidate();
-            }
-        }
-    }
-
-    private boolean updateTracking() {
-        Frame frame = fragment.getArSceneView().getArFrame();
-        boolean wasTracking = isTracking;
-        isTracking = frame != null &&
-                frame.getCamera().getTrackingState() == TrackingState.TRACKING;
-        return isTracking != wasTracking;
-    }
-
-    private boolean updateHitTest() {
-        Frame frame = fragment.getArSceneView().getArFrame();
-        android.graphics.Point pt = getScreenCenter();
-        List<HitResult> hits;
-        boolean wasHitting = isHitting;
-        isHitting = false;
-        if (frame != null) {
-            hits = frame.hitTest(pt.x, pt.y);
-            for (HitResult hit : hits) {
-                Trackable trackable = hit.getTrackable();
-                if (trackable instanceof Plane &&
-                        ((Plane) trackable).isPoseInPolygon(hit.getHitPose())) {
-                    isHitting = true;
-                    break;
-                }
-            }
-        }
-        return wasHitting != isHitting;
-    }
-
-    private android.graphics.Point getScreenCenter() {
-        View vw = findViewById(android.R.id.content);
-        return new android.graphics.Point(vw.getWidth()/2, vw.getHeight()/2);
-    }
-
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-
-    private void initializeGallery() {
-        LinearLayout gallery = findViewById(R.id.gallery_layout);
-
-        ImageView atkins = new ImageView(this);
-        atkins.setImageResource(R.drawable.atkinsuncsign);
-        atkins.setContentDescription("atkins");
-        atkins.setOnClickListener(view ->{addObject(Uri.parse("AtkinsSign.sfb"));});
-        gallery.addView(atkins);
-
-        ImageView cone = new ImageView(this);
-        cone.setImageResource(R.drawable.coneuncsign);
-        cone.setContentDescription("cone");
-        cone.setOnClickListener(view ->{addObject(Uri.parse("ConeSign.sfb"));});
-        gallery.addView(cone);
-
-        ImageView sac = new ImageView(this);
-        sac.setImageResource(R.drawable.sacuncsign);
-        sac.setContentDescription("sac");
-        sac.setOnClickListener(view ->{addObject(Uri.parse("SACsign.sfb"));});
-        gallery.addView(sac);
-
-
-        ImageView igloo = new ImageView(this);
-        igloo.setImageResource(R.drawable.igloo_thumb);
-        igloo.setContentDescription("igloo");
-        igloo.setOnClickListener(view ->{addObject(Uri.parse("igloo.sfb"));});
-        gallery.addView(igloo);
-
-        ImageView sphere = new ImageView(this);
-        sphere.setImageResource(R.drawable.yellowballs);
-        sphere.setContentDescription("sphere");
-        sphere.setOnClickListener(view ->{addObject(Uri.parse("sphere.sfb"));});
-        gallery.addView(sphere);
-    }
-
-    private void addObject(Uri model) {
-        Frame frame = fragment.getArSceneView().getArFrame();
-        android.graphics.Point pt = getScreenCenter();
-        List<HitResult> hits;
-        if (frame != null) {
-            hits = frame.hitTest(pt.x, pt.y);
-            for (HitResult hit : hits) {
-                Trackable trackable = hit.getTrackable();
-                if (trackable instanceof Plane &&
-                        ((Plane) trackable).isPoseInPolygon(hit.getHitPose())) {
-                    placeObject(fragment, hit.createAnchor(), model);
-                    break;
-
-                }
-            }
-        }
-    }
-
-    private void placeObject(ArFragment fragment, Anchor anchor, Uri model) {
-        CompletableFuture<Void> renderableFuture =
-                ModelRenderable.builder()
-                        .setSource(fragment.getContext(), model)
-                        .build()
-                        .thenAccept(renderable -> addNodeToScene(fragment, anchor, renderable))
-                        .exceptionally((throwable -> {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setMessage(throwable.getMessage())
-                                    .setTitle("Codelab error!");
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                            return null;
-                        }));
-    }
-
-    private void addNodeToScene(ArFragment fragment, Anchor anchor, Renderable renderable) {
-        AnchorNode anchorNode = new AnchorNode(anchor);
-        TransformableNode node = new TransformableNode(fragment.getTransformationSystem());
-        node.setRenderable(renderable);
-        node.setParent(anchorNode);
-        fragment.getArSceneView().getScene().addChild(anchorNode);
-        node.select();
-    }
-
-
-}
 
         //trying new things
          /*M MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.RED))
@@ -791,3 +789,5 @@ public class AR_Page_Activity extends AppCompatActivity {
 */
 
 
+    }
+}

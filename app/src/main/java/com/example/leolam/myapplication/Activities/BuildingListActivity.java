@@ -41,9 +41,6 @@ public class BuildingListActivity extends AppCompatActivity {
     private double selectedLong = 0.0;
 
     private ListView listview;
-    double selectedLat;
-    double selectedLong;
-
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference getmDatabase = database.getReference();

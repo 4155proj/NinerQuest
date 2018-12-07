@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import com.example.leolam.myapplication.Maps_Activity;
 import com.example.leolam.myapplication.R;
+import com.example.leolam.myapplication.SceneFormExample.LocationActivity;
 import com.example.leolam.myapplication.map_main;
 import com.google.ar.sceneform.ux.ArFragment;
 
@@ -42,12 +43,12 @@ public class HomeActivity extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.M)
             public void onClick(View view) {
 
-                Intent signup = new Intent(HomeActivity.this, AR_Page_Activity.class);
+                Intent signup = new Intent(HomeActivity.this, LocationActivity.class);
                 startActivity(signup);
 
                 //ActivityCompat.requestPermissions(HomeActivity.this,
                        //new String[]{Manifest.permission.CAMERA},
-                       // MY_PERMISSIONS_REQUEST_CAMERA);
+                       // MY_PERMISSIONS_REQUEST_CAMERA);//
             }
 
         });
