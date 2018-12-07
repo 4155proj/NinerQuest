@@ -1,7 +1,10 @@
 package com.example.leolam.myapplication;
 
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Criteria;
@@ -14,7 +17,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
+import com.example.leolam.myapplication.Activities.BuildingListActivity;
+import com.example.leolam.myapplication.SceneFormExample.LocationActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -43,10 +50,14 @@ import static android.os.Build.*;
 public class Maps_Activity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12;
+    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 13;
     private GoogleMap mMap;
     ArrayList markerPoints= new ArrayList();
     private Location location;
     Polyline line;
+    double destLat;
+    double destLong;
+    String buildName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +67,26 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        destLat = getIntent().getDoubleExtra("LATITUDE", 0.0);
+        destLong = getIntent().getDoubleExtra("LONGITUDE", 0.0);
+        buildName = getIntent().getStringExtra("BuildingName");
+
+        Button navigateButton = (Button) findViewById(R.id.navigateButton);
+        navigateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @TargetApi(Build.VERSION_CODES.M)
+            public void onClick(View view) {
+
+                ActivityCompat.requestPermissions(Maps_Activity.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+
+                Intent signup = new Intent(Maps_Activity.this, LocationActivity.class);
+                signup.putExtra("LATITUDE", destLat);
+                signup.putExtra("LONGITUDE", destLong);
+                signup.putExtra("BuildingName", buildName);
+                startActivity(signup);
+            }
+
+        });
     }
 
     @Override
@@ -74,6 +105,7 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
         }
         double destLat = getIntent().getDoubleExtra("LATITUDE", 0.0);
         double destLong = getIntent().getDoubleExtra("LONGITUDE", 0.0);
+        String buildName = getIntent().getStringExtra("BuildingName");
         LatLng origin = new LatLng(location.getLatitude(), location.getLongitude());
 
         LatLng dest = new LatLng(destLat, destLong);
@@ -107,6 +139,9 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
             // Start downloading json data from Google Directions API
             downloadTask.execute(url);
         }
+
+
+
 
     }
 

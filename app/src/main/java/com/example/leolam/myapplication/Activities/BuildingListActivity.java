@@ -39,6 +39,7 @@ public class BuildingListActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 98;
     private double selectedLat = 0.0;
     private double selectedLong = 0.0;
+    private String buildName = "";
 
     private ListView listview;
 
@@ -65,6 +66,7 @@ public class BuildingListActivity extends AppCompatActivity {
 
                 signup.putExtra("LATITUDE", selectedLat);
                 signup.putExtra("LONGITUDE", selectedLong);
+                signup.putExtra("BuildingName", buildName);
                 startActivity(signup);
             }
 
@@ -111,6 +113,7 @@ public class BuildingListActivity extends AppCompatActivity {
                         view.setSelected(true);
                         String selectedFromList = (String)(listview.getItemAtPosition(position));
 
+                         buildName = (String ) (addressAdapter.getItem(position));
                          selectedLat = (Double) (addressAdapter2.getItem(position));
                          selectedLong = (Double) (addressAdapter3.getItem(position));
 
@@ -137,10 +140,10 @@ public class BuildingListActivity extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                    }
+                    }*/
 
                 }
                 else {
