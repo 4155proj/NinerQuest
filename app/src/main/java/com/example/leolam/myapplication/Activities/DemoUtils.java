@@ -1,3 +1,4 @@
+
 package com.example.leolam.myapplication.Activities;
 /*
  * Copyright 2018 Google LLC.
@@ -14,6 +15,7 @@ package com.example.leolam.myapplication.Activities;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /*
  * Copyright 2018 Google LLC
  *
@@ -30,12 +32,16 @@ package com.example.leolam.myapplication.Activities;
  * limitations under the License.
  */
 
+
 import android.Manifest;
 import android.app.Activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+
+
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
@@ -54,11 +60,13 @@ import com.google.ar.core.exceptions.UnavailableDeviceNotCompatibleException;
 import com.google.ar.core.exceptions.UnavailableException;
 import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
 
+
 import uk.co.appoly.arcorelocation.utils.ARLocationPermissionHelper;
 
 /** Static utility methods to simplify creating multiple demo activities. */
 public class DemoUtils {
     private static final String TAG = "SceneformDemoUtils";
+
     /**
      * Creates and shows a Toast containing an error message. If there was an exception passed in it
      * will be appended to the toast. The error will also be written to the Log
@@ -103,7 +111,9 @@ public class DemoUtils {
             throws UnavailableException {
         Session session = null;
         // if we have the camera permission, create the session
+
         if (ARLocationPermissionHelper.hasPermission(activity)) {
+
             switch (ArCoreApk.getInstance().requestInstall(activity, !installRequested)) {
                 case INSTALL_REQUESTED:
                     return null;
@@ -111,7 +121,9 @@ public class DemoUtils {
                     break;
             }
             session = new Session(activity);
+
             // IMPORTANT!!!  ArSceneView needs to use the non-blocking update mode.
+
             Config config = new Config(session);
             config.setUpdateMode(Config.UpdateMode.LATEST_CAMERA_IMAGE);
             session.configure(config);
@@ -120,6 +132,7 @@ public class DemoUtils {
     }
 
     /** Check to see we have the necessary permissions for this app, and ask for them if we don't. */
+
   /*public static void requestPermission(Activity activity, int requestCode) {
     ActivityCompat.requestPermissions(
         activity, new String[] {Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION}, requestCode);
@@ -162,4 +175,6 @@ public class DemoUtils {
         }
         Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
     }
+
 }
+

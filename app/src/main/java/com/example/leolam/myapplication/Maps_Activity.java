@@ -75,6 +75,7 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
         double destLat = getIntent().getDoubleExtra("LATITUDE", 0.0);
         double destLong = getIntent().getDoubleExtra("LONGITUDE", 0.0);
         LatLng origin = new LatLng(location.getLatitude(), location.getLongitude());
+
         LatLng dest = new LatLng(destLat, destLong);
         if (markerPoints.size() > 1) {
             markerPoints.clear();
@@ -82,6 +83,7 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
         }
         markerPoints.add(origin);
         markerPoints.add(dest);
+
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 15.0f));
 
@@ -98,7 +100,7 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
 
             // Getting URL to the Google Directions API=
             String url = getDirectionsUrl(origin, dest);
-           //String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+origin,dest + "&key=" + MY_API_KEY;
+            //String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+origin,dest + "&key=" + MY_API_KEY;
 
             DownloadTask downloadTask = new DownloadTask();
 
@@ -242,6 +244,7 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
                 sb.append(line);
             }
 
+            data = sb.toString();
             data = sb.toString();
 
             br.close();

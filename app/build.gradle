@@ -47,6 +47,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.firebase:firebase-database:16.0.5'
 
+
     implementation 'com.google.ar.sceneform:assets:1.6.0'
 
     implementation 'com.github.appoly:ARCore-Location:1.1.2'
@@ -59,6 +60,7 @@ dependencies {
     implementation 'com.google.ar.sceneform:core:1.6.0'
 
     implementation 'com.google.ar.sceneform:plugin:1.6.0'
+
 
 }
 
@@ -87,6 +89,7 @@ sceneform.asset('sampledata/models/igloo.obj',
         'sampledata/models/igloo.sfa',
         'src/main/assets/igloo')
 
+
 sceneform.asset('../../../Desktop/AtkinsSign.fbx',
         'default',
         '../../../Desktop/AtkinsSign.sfa',
@@ -101,3 +104,4 @@ sceneform.asset('../../../Desktop/SACsign.fbx',
         'default',
         '../../../Desktop/SACsign.sfa',
         'src/main/assets/SACsign')
+

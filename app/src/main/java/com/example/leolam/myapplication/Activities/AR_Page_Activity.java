@@ -1,18 +1,25 @@
 package com.example.leolam.myapplication.Activities;
 
+
 import android.graphics.Paint;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+
+
+import com.example.leolam.myapplication.DirectionsJSONParser;
 import com.example.leolam.myapplication.R;
+
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Frame;
 import com.google.ar.core.HitResult;
@@ -35,9 +42,11 @@ import com.google.ar.sceneform.ux.TransformableNode;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+
 import uk.co.appoly.arcorelocation.LocationScene;
 
 public class AR_Page_Activity extends AppCompatActivity {
+
     private ArFragment fragment;
     //private ArSceneView arSceneView;
 
@@ -75,6 +84,7 @@ public class AR_Page_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ar__page);
+
         //rSceneView = findViewById(R.id.ar_scene_view);
 
         fragment = (ArFragment)
@@ -423,6 +433,7 @@ public class AR_Page_Activity extends AppCompatActivity {
 
          /* Frame frame = arSceneView.getArFrame();
 
+
         CompletableFuture<ModelRenderable> sphere = ModelRenderable.builder()
                 .setSource(this, Uri.parse("sphere.sfb")).build();
 
@@ -436,14 +447,17 @@ public class AR_Page_Activity extends AppCompatActivity {
                                 return null;
                             }
 
+
                             try {
                                 sphereRenderable = sphere.get();
+
 
                             } catch (InterruptedException | ExecutionException ex) {
                                 DemoUtils.displayError(this, "Unable to load renderables", ex);
                             }
                             return null;
                         });
+
 
         arSceneView
                 .getScene()
@@ -596,49 +610,184 @@ public class AR_Page_Activity extends AppCompatActivity {
         igloo.setContentDescription("igloo");
         igloo.setOnClickListener(view ->{addObject(Uri.parse("igloo.sfb"));});
         gallery.addView(igloo);
+
     }
 
-    private void addObject(Uri model) {
-        Frame frame = fragment.getArSceneView().getArFrame();
-        android.graphics.Point pt = getScreenCenter();
-        List<HitResult> hits;
-        if (frame != null) {
-            hits = frame.hitTest(pt.x, pt.y);
-            for (HitResult hit : hits) {
-                Trackable trackable = hit.getTrackable();
-                if (trackable instanceof Plane &&
-                        ((Plane) trackable).isPoseInPolygon(hit.getHitPose())) {
-                    placeObject(fragment, hit.createAnchor(), model);
-                    break;
+    private class DownloadTask extends AsyncTask<String, Void, String> {
 
-                }
+        @Override
+        protected String doInBackground(String... url) {
+
+            String data = "";
+
+            try {
+                data = downloadUrl(url[0]);
+            } catch (Exception e) {
+                Log.d("Background Task", e.toString());
             }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            AR_Page_Activity.ParserTask parserTask = new AR_Page_Activity.ParserTask();
+
+
+            parserTask.execute(result);
+
         }
     }
 
-    private void placeObject(ArFragment fragment, Anchor anchor, Uri model) {
-        CompletableFuture<Void> renderableFuture =
-                ModelRenderable.builder()
-                        .setSource(fragment.getContext(), model)
-                        .build()
-                        .thenAccept(renderable -> addNodeToScene(fragment, anchor, renderable))
-                        .exceptionally((throwable -> {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setMessage(throwable.getMessage())
-                                    .setTitle("Codelab error!");
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                            return null;
-                        }));
+    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+
+        // Parsing the data in non-ui thread
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
+
+            JSONObject jObject;
+            List<List<HashMap<String, String>>> routes = null;
+
+            try {
+                jObject = new JSONObject(jsonData[0]);
+                DirectionsJSONParser parser = new DirectionsJSONParser();
+
+                routes = parser.parse(jObject);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return routes;
+        }
+
+
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+            points = null;
+
+            points = new ArrayList();
+            for (int i = 0; i < result.size(); i++) {
+
+                List<HashMap<String, String>> path = result.get(i);
+
+                for (int j = 0; j < path.size(); j++) {
+                    HashMap<String, String> point = path.get(j);
+
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    LatLng position = new LatLng(lat, lng);
+                    points.add(position);
+                }
+
+
+
+            }
+
+        }
+
+
     }
 
-    private void addNodeToScene(ArFragment fragment, Anchor anchor, Renderable renderable) {
-        AnchorNode anchorNode = new AnchorNode(anchor);
-        TransformableNode node = new TransformableNode(fragment.getTransformationSystem());
-        node.setRenderable(renderable);
-        node.setParent(anchorNode);
-        fragment.getArSceneView().getScene().addChild(anchorNode);
-        node.select();
+    private String getDirectionsUrl(LatLng origin, LatLng dest) {
+
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+
+        // Sensor enabled
+        String sensor = "sensor=false";
+        String mode = "mode=walking";
+
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode;
+
+        // Output format
+        String output = "json";
+
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=AIzaSyAkRBwjgQhb-BRyGsZuv91FTZcq0Dzd3DA";
+
+
+        return url;
     }
+
+    private String downloadUrl(String strUrl) throws IOException {
+        String data = "";
+        InputStream iStream = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            URL url = new URL(strUrl);
+
+            urlConnection = (HttpURLConnection) url.openConnection();
+
+            urlConnection.connect();
+
+            iStream = urlConnection.getInputStream();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
+
+            StringBuffer sb = new StringBuffer();
+
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+
+            data = sb.toString();
+
+            br.close();
+
+        } catch (Exception e) {
+            Log.d("Exception", e.toString());
+        } finally {
+            iStream.close();
+            urlConnection.disconnect();
+        }
+        return data;
+    }
+    /*@Override
+    protected void onResume() {
+        super.onResume();
+        if (arSceneView == null) {
+            return;
+        }
+
+        if (arSceneView.getSession() == null) {
+            // If the session wasn't created yet, don't resume rendering.
+            // This can happen if ARCore needs to be updated or permissions are not granted yet.
+            try {
+                Session session = DemoUtils.createArSession(this, installRequested);
+                if (session == null) {
+                    installRequested = DemoUtils.hasCameraPermission(this);
+                    return;
+                } else {
+                    arSceneView.setupSession(session);
+                }
+            } catch (UnavailableException e) {
+                DemoUtils.handleSessionException(this, e);
+            }
+        }
+
+        try {
+            arSceneView.resume();
+        } catch (CameraNotAvailableException ex) {
+            DemoUtils.displayError(this, "Unable to get camera", ex);
+            finish();
+            return;
+        }
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (arSceneView != null) {
+            arSceneView.pause();
+        }
+    }
+
 */
+
 
