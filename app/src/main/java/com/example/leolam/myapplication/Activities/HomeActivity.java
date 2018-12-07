@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.leolam.myapplication.Maps_Activity;
 import com.example.leolam.myapplication.R;
 import com.example.leolam.myapplication.map_main;
 import com.google.ar.sceneform.ux.ArFragment;
@@ -31,8 +32,8 @@ public class HomeActivity extends AppCompatActivity {
         ImageView Contact = findViewById(R.id.imageView8);
         ImageView Map = findViewById(R.id.imageView6);
         ImageView Navigation = findViewById(R.id.imageView2);
-        fragment = (ArFragment)
-               getSupportFragmentManager().findFragmentById(R.id.sceneform_fragment);
+        //fragment = (ArFragment)
+              // getSupportFragmentManager().findFragmentById(R.id.sceneform_fragment);
 
 
         //Free Roam Button to AR Page
@@ -85,7 +86,7 @@ public class HomeActivity extends AppCompatActivity {
         Map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent signup = new Intent(HomeActivity.this, map_main.class);
+                Intent signup = new Intent(HomeActivity.this, Maps_Activity.class);
                 startActivity(signup);
             }
         });

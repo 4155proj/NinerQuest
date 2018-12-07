@@ -72,11 +72,10 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
         if (location.equals(null)) {
             location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
+        double destLat = getIntent().getDoubleExtra("LATITUDE", 0.0);
+        double destLong = getIntent().getDoubleExtra("LONGITUDE", 0.0);
         LatLng origin = new LatLng(location.getLatitude(), location.getLongitude());
-        Double destLat = getIntent().getDoubleExtra("LATITUDE",0);
-        Double destLong = getIntent().getDoubleExtra("LONGITUDE",0);
 
-        //LatLng origin = new LatLng(35.307076, -80.735170);
         LatLng dest = new LatLng(destLat, destLong);
         if (markerPoints.size() > 1) {
             markerPoints.clear();
@@ -85,16 +84,10 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
         markerPoints.add(origin);
         markerPoints.add(dest);
 
-        //
 
-        //LatLng gilgit = new LatLng(35.307076, -80.735170);
-        //mMap.addMarker(new MarkerOptions().position(gilgit).title(""));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 15.0f));
 
-        // Adding new item to the ArrayList
 
-        // Creating MarkerOptions
-        // Setting the position of the marker
 
         // Add new marker to the Google Map Android API V2
         mMap.addMarker(new MarkerOptions().position(origin).title("Starting"));
@@ -114,6 +107,7 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
             // Start downloading json data from Google Directions API
             downloadTask.execute(url);
         }
+
     }
 
 

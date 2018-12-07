@@ -43,14 +43,14 @@ public class EventsActivity extends AppCompatActivity {
                 startActivity(signup);
             }
         });
-
+/*
         Go_to_event.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent signup = new Intent(EventsActivity.this, EventsActivity.class);
                 startActivity(signup);
             }
-        });
+        });   */
         /*
         getmDatabase.child("Event_list").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

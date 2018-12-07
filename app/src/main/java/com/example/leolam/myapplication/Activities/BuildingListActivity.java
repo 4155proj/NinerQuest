@@ -41,6 +41,8 @@ public class BuildingListActivity extends AppCompatActivity {
     private double selectedLong = 0.0;
 
     private ListView listview;
+    double selectedLat;
+    double selectedLong;
 
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -61,7 +63,9 @@ public class BuildingListActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 ActivityCompat.requestPermissions(BuildingListActivity.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
-                Intent signup = new Intent(BuildingListActivity.this, AR_Page_Activity.class);
+
+                Intent signup = new Intent(BuildingListActivity.this, Maps_Activity.class);
+
                 signup.putExtra("LATITUDE", selectedLat);
                 signup.putExtra("LONGITUDE", selectedLong);
                 startActivity(signup);
@@ -109,8 +113,10 @@ public class BuildingListActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                         view.setSelected(true);
                         String selectedFromList = (String)(listview.getItemAtPosition(position));
-                        selectedLat = (Double) (addressAdapter2.getItem(position));
-                        selectedLong = (Double) (addressAdapter3.getItem(position));
+
+                         selectedLat = (Double) (addressAdapter2.getItem(position));
+                         selectedLong = (Double) (addressAdapter3.getItem(position));
+
                     }
 
                 });
