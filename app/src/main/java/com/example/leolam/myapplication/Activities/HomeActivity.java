@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.leolam.myapplication.Maps_Activity;
 import com.example.leolam.myapplication.R;
 import com.example.leolam.myapplication.map_main;
 import com.google.ar.sceneform.ux.ArFragment;
@@ -85,7 +86,7 @@ public class HomeActivity extends AppCompatActivity {
         Map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent signup = new Intent(HomeActivity.this, map_main.class);
+                Intent signup = new Intent(HomeActivity.this, Maps_Activity.class);
                 startActivity(signup);
             }
         });

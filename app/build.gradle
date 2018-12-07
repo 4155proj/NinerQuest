@@ -28,11 +28,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 //Add necessary PlayService API's from: https://developers.google.com/android/guides/setup
 dependencies {
-    implementation "com.google.ar.sceneform.ux:sceneform-ux:1.4.0"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
@@ -47,18 +47,25 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.firebase:firebase-database:16.0.5'
 
+    implementation 'com.google.ar.sceneform:assets:1.6.0'
+
     implementation 'com.github.appoly:ARCore-Location:1.1.2'
     // Provides ARCore Session and related resources.
-    implementation 'com.google.ar:core:1.5.0'
+    implementation 'com.google.ar:core:1.6.0'
 
-    // Provides ArFragment, and other UX resources.
-    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.5.1'
+    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.6.0'
 
     // Alternatively, use ArSceneView without the UX dependency.
-    implementation 'com.google.ar.sceneform:core:1.5.1'
+    implementation 'com.google.ar.sceneform:core:1.6.0'
+
+    implementation 'com.google.ar.sceneform:plugin:1.6.0'
 
 }
 
+sceneform.asset('sampledata/models/sphere.obj',
+        'default',
+        'sampledata/models/sphere.sfa',
+        'src/main/assets/sphere')
 
 sceneform.asset('sampledata/models/andy.obj',
         'default',
@@ -80,7 +87,17 @@ sceneform.asset('sampledata/models/igloo.obj',
         'sampledata/models/igloo.sfa',
         'src/main/assets/igloo')
 
-sceneform.asset('sampledata/models/sphere.obj',
+sceneform.asset('../../../Desktop/AtkinsSign.fbx',
         'default',
-        'sampledata/models/sphere.sfa',
-        'src/main/assets/sphere')
+        '../../../Desktop/AtkinsSign.sfa',
+        'src/main/assets/AtkinsSign')
+
+sceneform.asset('../../../Desktop/ConeSign.fbx',
+        'default',
+        '../../../Desktop/ConeSign.sfa',
+        'src/main/assets/ConeSign')
+
+sceneform.asset('../../../Desktop/SACsign.fbx',
+        'default',
+        '../../../Desktop/SACsign.sfa',
+        'src/main/assets/SACsign')

@@ -1,44 +1,50 @@
 package com.example.leolam.myapplication.Activities;
 
-import android.content.Context;
+import android.graphics.Paint;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.leolam.myapplication.R;
+import com.google.ar.core.Anchor;
 import com.google.ar.core.Frame;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
-import com.google.ar.core.Session;
+import com.google.ar.core.Trackable;
 import com.google.ar.core.TrackingState;
-import com.google.ar.core.exceptions.CameraNotAvailableException;
-import com.google.ar.core.exceptions.UnavailableException;
-import com.google.ar.sceneform.ArSceneView;
+import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Vector3;
+import com.google.ar.sceneform.rendering.Color;
+import com.google.ar.sceneform.rendering.MaterialFactory;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.Renderable;
+import com.google.ar.sceneform.rendering.ShapeFactory;
 import com.google.ar.sceneform.ux.ArFragment;
+import com.google.ar.sceneform.ux.BaseArFragment;
+import com.google.ar.sceneform.ux.TransformableNode;
 
+
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
-import uk.co.appoly.arcorelocation.LocationMarker;
 import uk.co.appoly.arcorelocation.LocationScene;
 
 public class AR_Page_Activity extends AppCompatActivity {
     private ArFragment fragment;
-    private ArSceneView arSceneView;
+    //private ArSceneView arSceneView;
 
     private ModelRenderable sphereRenderable;
+    private ModelRenderable andyRenderable;
+    private ModelRenderable exampleLayoutRenderable;
+
 
     // True once scene is loaded
     private boolean hasFinishedLoading = false;
@@ -52,16 +58,331 @@ public class AR_Page_Activity extends AppCompatActivity {
     private LocationScene locationScene;
     private boolean installRequested;
 
+    private static final String TAG = "AR_Page_Activity";
+    private BaseArFragment arFragment;
+
+    private final Paint paint = new Paint();
+    private boolean enabled;
+
+    private PointerDrawable pointer = new PointerDrawable();
+    private boolean isTracking;
+    private boolean isHitting;
+    private CompletableFuture<ModelRenderable> future;
+    private ModelRenderable redSphereRenderable;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ar__page);
+        //rSceneView = findViewById(R.id.ar_scene_view);
+
+        fragment = (ArFragment)
+                getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
+
+/*
+        Node node = new Node();
+        node.setParent(arFragment.getArSceneView().getScene());
+        node.setRenderable(sphereRenderable);
+
+        // Test
+
+        Camera camera = node.getScene().getCamera();
+        camera.setLocalRotation(Quaternion.axisAngle(Vector3.right(), -30.0f));
+
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("sphere.sfb"))
+                .build()
+                .thenAccept(renderable -> sphereRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Log.e(TAG, "Unable to load Renderable.", throwable);
+                            return null;
+                        });
+
+*/
+/*
+        CompletableFuture<ModelRenderable> sphere = ModelRenderable.builder()
+                .setSource(this, Uri.parse("sphere.sfb"))
+                .build();
+
+
+        CompletableFuture.allOf(sphere)
+                .handle(
+                        (notUsed, throwable) ->
+                        {
+                            if (throwable != null) {
+                                DemoUtils.displayError(this, "Unable to load renderables", throwable);
+                                return null;
+                            }
+
+                            try {
+                                sphereRenderable = sphere.get();
+
+                            } catch (InterruptedException | ExecutionException ex) {
+                                DemoUtils.displayError(this, "Unable to load renderables", ex);
+                            }
+                            return null;
+                        });
+*/
+
+
+        fragment.getArSceneView().getScene().addOnUpdateListener(frameTime -> {
+            fragment.onUpdate(frameTime);
+            onUpdate();
+        });
+
+
+        MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.RED))
+                .thenAccept(
+                        material -> {
+                            redSphereRenderable =
+                                    ShapeFactory.makeSphere(0.1f, new Vector3(0.0f, 0.15f, 0.0f), material); });
+
+        /*
+        arSceneView
+                .getScene()
+                .addOnUpdateListener(
+                        frameTime -> {
+                            if (!hasFinishedLoading) {
+                                return;
+                            }
+
+                            if (locationScene == null) {
+                                // If our locationScene object hasn't been setup yet, this is a good time to do it
+                                // We know that here, the AR components have been initiated.
+                                locationScene = new LocationScene(this, this, arSceneView);
+
+                                // Now lets create our location markers.
+                                // First, a layout
+                                new LocationMarker(
+                                        -80.694494,
+                                        35.294043,
+                                        getSphere());
+                            }
+
+
+                            Frame frame = arSceneView.getArFrame();
+                            if (frame == null) {
+                                return;
+                            }
+
+                            if (frame.getCamera().getTrackingState() != TrackingState.TRACKING) {
+                                return;
+                            }
+
+                            if (locationScene != null) {
+                                locationScene.processFrame(frame);
+                            }
+
+                            if (loadingMessageSnackbar != null) {
+                                for (Plane plane : frame.getUpdatedTrackables(Plane.class)) {
+                                    if (plane.getTrackingState() == TrackingState.TRACKING) {
+                                        hideLoadingMessage();
+                                    }
+                                }
+                            }
+                        });
+*/
+
+
+        Node node = new Node();
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("sphere.sfb"))
+                .build()
+                .thenAccept(renderable -> redSphereRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Log.e(TAG, "Unable to load Renderable.", throwable);
+                            node.setRenderable(sphereRenderable);
+                            node.setLocalPosition(new Vector3(0.5f, 0f, 0f));
+                            return null;
+                        });
+
+
+        node.setParent(fragment.getArSceneView().getScene());
+        node.setRenderable(sphereRenderable);
+        node.setLocalPosition(new Vector3(0.5f, 0f, 0f));
+
+
+        initializeGallery();
+
+    }
+
+
+
+    private void onUpdate() {
+        boolean trackingChanged = updateTracking();
+        View contentView = findViewById(android.R.id.content);
+        if (trackingChanged) {
+            if (isTracking) {
+                contentView.getOverlay().add(pointer);
+            } else {
+                contentView.getOverlay().remove(pointer);
+            }
+            contentView.invalidate();
+        }
+
+        if (isTracking) {
+            boolean hitTestChanged = updateHitTest();
+            if (hitTestChanged) {
+                pointer.setEnabled(isHitting);
+                contentView.invalidate();
+            }
+        }
+    }
+
+    private boolean updateTracking() {
+        Frame frame = fragment.getArSceneView().getArFrame();
+        boolean wasTracking = isTracking;
+        isTracking = frame != null &&
+                frame.getCamera().getTrackingState() == TrackingState.TRACKING;
+        return isTracking != wasTracking;
+    }
+
+    private boolean updateHitTest() {
+        Frame frame = fragment.getArSceneView().getArFrame();
+        android.graphics.Point pt = getScreenCenter();
+        List<HitResult> hits;
+        boolean wasHitting = isHitting;
+        isHitting = false;
+        if (frame != null) {
+            hits = frame.hitTest(pt.x, pt.y);
+            for (HitResult hit : hits) {
+                Trackable trackable = hit.getTrackable();
+                if (trackable instanceof Plane &&
+                        ((Plane) trackable).isPoseInPolygon(hit.getHitPose())) {
+                    isHitting = true;
+                    break;
+                }
+            }
+        }
+        return wasHitting != isHitting;
+    }
+
+    private android.graphics.Point getScreenCenter() {
+        View vw = findViewById(android.R.id.content);
+        return new android.graphics.Point(vw.getWidth()/2, vw.getHeight()/2);
+    }
+
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+
+    private void initializeGallery() {
+        LinearLayout gallery = findViewById(R.id.gallery_layout);
+
+        ImageView atkins = new ImageView(this);
+        atkins.setImageResource(R.drawable.atkinsuncsign);
+        atkins.setContentDescription("atkins");
+        atkins.setOnClickListener(view ->{addObject(Uri.parse("AtkinsSign.sfb"));});
+        gallery.addView(atkins);
+
+        ImageView cone = new ImageView(this);
+        cone.setImageResource(R.drawable.coneuncsign);
+        cone.setContentDescription("cone");
+        cone.setOnClickListener(view ->{addObject(Uri.parse("ConeSign.sfb"));});
+        gallery.addView(cone);
+
+        ImageView sac = new ImageView(this);
+        sac.setImageResource(R.drawable.sacuncsign);
+        sac.setContentDescription("sac");
+        sac.setOnClickListener(view ->{addObject(Uri.parse("SACsign.sfb"));});
+        gallery.addView(sac);
+
+
+        ImageView igloo = new ImageView(this);
+        igloo.setImageResource(R.drawable.igloo_thumb);
+        igloo.setContentDescription("igloo");
+        igloo.setOnClickListener(view ->{addObject(Uri.parse("igloo.sfb"));});
+        gallery.addView(igloo);
+
+        ImageView sphere = new ImageView(this);
+        sphere.setImageResource(R.drawable.yellowballs);
+        sphere.setContentDescription("sphere");
+        sphere.setOnClickListener(view ->{addObject(Uri.parse("sphere.sfb"));});
+        gallery.addView(sphere);
+    }
+
+    private void addObject(Uri model) {
+        Frame frame = fragment.getArSceneView().getArFrame();
+        android.graphics.Point pt = getScreenCenter();
+        List<HitResult> hits;
+        if (frame != null) {
+            hits = frame.hitTest(pt.x, pt.y);
+            for (HitResult hit : hits) {
+                Trackable trackable = hit.getTrackable();
+                if (trackable instanceof Plane &&
+                        ((Plane) trackable).isPoseInPolygon(hit.getHitPose())) {
+                    placeObject(fragment, hit.createAnchor(), model);
+                    break;
+
+                }
+            }
+        }
+    }
+
+    private void placeObject(ArFragment fragment, Anchor anchor, Uri model) {
+        CompletableFuture<Void> renderableFuture =
+                ModelRenderable.builder()
+                        .setSource(fragment.getContext(), model)
+                        .build()
+                        .thenAccept(renderable -> addNodeToScene(fragment, anchor, renderable))
+                        .exceptionally((throwable -> {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                            builder.setMessage(throwable.getMessage())
+                                    .setTitle("Codelab error!");
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                            return null;
+                        }));
+    }
+
+    private void addNodeToScene(ArFragment fragment, Anchor anchor, Renderable renderable) {
+        AnchorNode anchorNode = new AnchorNode(anchor);
+        TransformableNode node = new TransformableNode(fragment.getTransformationSystem());
+        node.setRenderable(renderable);
+        node.setParent(anchorNode);
+        fragment.getArSceneView().getScene().addChild(anchorNode);
+        node.select();
+    }
+
+
+}
+
+        //trying new things
+         /*M MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.RED))
+                .thenAccept(
+                        material -> {
+                            sphereRenderable = ShapeFactory.makeSphere(.1f, new Vector3(.0f, .15f, .0f), material);
+                        }
+                );
+      odelRenderable.builder()
+                .setSource(this, R.layout.sceneform_plane_discovery_layout)
+                .build()
+                .thenAccept(renderable -> sphereRenderable = renderable);
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("sphere.obj"))
+                .build()
+                .thenAccept(renderable -> sphereRenderable = renderable)
+                .exceptionally(throwable -> {Log.e(TAG, "Unable to load Renderable.", throwable);
+                    return null;
+                }); */
+        // end trying
         //fragment = (ArFragment)
-                //getSupportFragmentManager().findFragmentById(R.id.sceneform_fragment);
+        //getSupportFragmentManager().findFragmentById(R.id.sceneform_fragment);
         //initializeGallery();
 
-        arSceneView = findViewById(R.id.ar_scene_view);
+       /* arSceneView = findViewById(R.id.ar_scene_view);
 
 
             if (!DemoUtils.checkIsSupportedDeviceOrFinish(this)) {
@@ -100,7 +421,7 @@ public class AR_Page_Activity extends AppCompatActivity {
                         });
 */
 
-         Frame frame = arSceneView.getArFrame();
+         /* Frame frame = arSceneView.getArFrame();
 
         CompletableFuture<ModelRenderable> sphere = ModelRenderable.builder()
                 .setSource(this, Uri.parse("sphere.sfb")).build();
@@ -129,7 +450,7 @@ public class AR_Page_Activity extends AppCompatActivity {
                 .setOnUpdateListener(
                         frameTime -> {
 
-                            
+
                             if (locationScene == null) {
                                 locationScene = new LocationScene(this, this, arSceneView);
                                 locationScene.mLocationMarkers.add(
@@ -150,6 +471,7 @@ public class AR_Page_Activity extends AppCompatActivity {
 
     private Node getSphere() {
         Node base = new Node();
+
         base.setRenderable(sphereRenderable);
         Context c = this;
         base.setOnTapListener((v, event) -> {
@@ -319,4 +641,4 @@ public class AR_Page_Activity extends AppCompatActivity {
         node.select();
     }
 */
-}
+

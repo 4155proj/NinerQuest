@@ -37,7 +37,7 @@
     file: 'sampledata/models/igloo.obj',
     name: 'igloo',
     recenter: 'root',
-    scale: 0.42322300000000002,
+    scale: 1.5,
   },
   version: '0.52:1',
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ccd9c8"
-    tools:context=".Maps_Activity">
+    tools:context=".Activities.AR_Page_Activity">
 
     <!--<fragment
         android:id="@+id/map2"
@@ -37,7 +37,21 @@
     <fragment android:name="com.google.ar.sceneform.ux.ArFragment"
         android:id="@+id/ux_fragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/gallery_layout"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintVertical_weight="9"/>
+
+    <LinearLayout
+        android:id="@+id/gallery_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ux_fragment"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintVertical_weight="1"/>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -46,13 +60,19 @@
         android:layout_height="match_parent"
         tools:context=".Activities.AR_Page_Activity">
 
-        <com.google.ar.sceneform.ArSceneView
+        <!--
+       <com.google.ar.sceneform.ArSceneView
             android:id="@+id/ar_scene_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="top"/>
+-->
 
     </RelativeLayout>
+
+
+
+
 
 
 </android.support.constraint.ConstraintLayout>

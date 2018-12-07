@@ -8,9 +8,9 @@
         },
         {
           baseColorTint: [
-            0.59999999999999998,
-            0.59999999999999998,
-            0.59999999999999998,
+            0.255,
+            0.255,
+            0.0,
             1,
           ],
         },
@@ -36,7 +36,8 @@
     file: 'sampledata/models/sphere.obj',
     name: 'sphere',
     recenter: 'root',
-    scale: 0.500081,
+    scale: 0.25,
   },
   version: '0.52:1',
+
 }

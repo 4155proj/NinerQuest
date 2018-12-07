@@ -1,5 +1,6 @@
 package com.example.leolam.myapplication.Activities;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -7,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +39,8 @@ public class BuildingListActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 98;
 
     private ListView listview;
+    double selectedLat;
+    double selectedLong;
 
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -57,8 +61,10 @@ public class BuildingListActivity extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.M)
             public void onClick(View view) {
 
-                //ActivityCompat.requestPermissions(BuildingListActivity.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+                ActivityCompat.requestPermissions(BuildingListActivity.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
                 Intent signup = new Intent(BuildingListActivity.this, Maps_Activity.class);
+                signup.putExtra("LATITUDE", selectedLat);
+                signup.putExtra("LONGITUDE", selectedLong);
                 startActivity(signup);
             }
 
@@ -134,8 +140,8 @@ public class BuildingListActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                         view.setSelected(true);
                         String selectedFromList = (String)(listview.getItemAtPosition(position));
-                        Double selectedLat = (Double) (addressAdapter2.getItem(position));
-                        Double selectedLong = (Double) (addressAdapter3.getItem(position));
+                         selectedLat = (Double) (addressAdapter2.getItem(position));
+                         selectedLong = (Double) (addressAdapter3.getItem(position));
                     }
 
             });
