@@ -46,86 +46,28 @@ import uk.co.appoly.arcorelocation.LocationScene;
 public class AR_Page_Activity extends AppCompatActivity {
 
     private ArFragment fragment;
-    //private ArSceneView arSceneView;
-
-    private ModelRenderable sphereRenderable;
-    private ModelRenderable andyRenderable;
-    private ModelRenderable exampleLayoutRenderable;
-
-
-    // True once scene is loaded
-    private boolean hasFinishedLoading = false;
-
-    // True once the scene has been placed.
-    private boolean hasPlacedSolarSystem = false;
-
-    private GestureDetector gestureDetector;
-    private Snackbar loadingMessageSnackbar = null;
-
-    private LocationScene locationScene;
-    private boolean installRequested;
-
     private static final String TAG = "AR_Page_Activity";
-    private BaseArFragment arFragment;
-
-    private final Paint paint = new Paint();
     private boolean enabled;
-
     private PointerDrawable pointer = new PointerDrawable();
     private boolean isTracking;
     private boolean isHitting;
-    private CompletableFuture<ModelRenderable> future;
-    private ModelRenderable redSphereRenderable;
 
-
+    // when creating activity, show AR camera visuals with imported coordinates for where to go
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ar__page);
-
-        //rSceneView = findViewById(R.id.ar_scene_view);
-
         fragment = (ArFragment)
                 getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
-
 
         fragment.getArSceneView().getScene().setOnUpdateListener(frameTime -> {
             fragment.onUpdate(frameTime);
             onUpdate();
         });
 
-
-        MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.RED))
-                .thenAccept(
-                        material -> {
-                            redSphereRenderable =
-                                    ShapeFactory.makeSphere(0.1f, new Vector3(0.0f, 0.15f, 0.0f), material); });
-
-
-        Node node = new Node();
-
-        ModelRenderable.builder()
-                .setSource(this, Uri.parse("sphere.sfb"))
-                .build()
-                .thenAccept(renderable -> redSphereRenderable = renderable)
-                .exceptionally(
-                        throwable -> {
-                            Log.e(TAG, "Unable to load Renderable.", throwable);
-                            node.setRenderable(sphereRenderable);
-                            node.setLocalPosition(new Vector3(0.5f, 0f, 0f));
-                            return null;
-                        });
-
-
-        node.setParent(fragment.getArSceneView().getScene());
-        node.setRenderable(sphereRenderable);
-        node.setLocalPosition(new Vector3(0.5f, 0f, 0f));
-
-
+        // initialize the Gallery of 3D models in the Free Roam section
         initializeGallery();
-
     }
-
 
     private void onUpdate() {
         boolean trackingChanged = updateTracking();
@@ -156,6 +98,7 @@ public class AR_Page_Activity extends AppCompatActivity {
         return isTracking != wasTracking;
     }
 
+    //when moving models manually
     private boolean updateHitTest() {
         Frame frame = fragment.getArSceneView().getArFrame();
         android.graphics.Point pt = getScreenCenter();
@@ -190,10 +133,11 @@ public class AR_Page_Activity extends AppCompatActivity {
         this.enabled = enabled;
     }
 
-
+    // create bottom bar of models to place
     private void initializeGallery() {
         LinearLayout gallery = findViewById(R.id.gallery_layout);
 
+        // place models inside gallary
         ImageView atkins = new ImageView(this);
         atkins.setImageResource(R.drawable.atkinsuncsign);
         atkins.setContentDescription("atkins");

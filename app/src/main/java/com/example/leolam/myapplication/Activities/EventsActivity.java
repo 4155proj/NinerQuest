@@ -43,42 +43,6 @@ public class EventsActivity extends AppCompatActivity {
                 startActivity(signup);
             }
         });
-/*
-        Go_to_event.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent signup = new Intent(EventsActivity.this, EventsActivity.class);
-                startActivity(signup);
-            }
-        });   */
-        /*
-        getmDatabase.child("Event_list").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                final List<String> EventList = new ArrayList<String>();
-
-                for (DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
-                    String buildingName = addressSnapshot.child("name").getValue(String.class);
-                    if (buildingName != null) {
-                        EventList.add(buildingName);
-                    }
-                }
-
-                Spinner spinner = (Spinner) findViewById(R.id.event_list_spinner);
-// Create an ArrayAdapter using the string array and a default spinner layout
-                ArrayAdapter<String> addressAdapter = new ArrayAdapter<String>(EventsActivity.this, android.R.layout.simple_spinner_item, EventList);
-// Specify the layout to use when the list of choices appears
-                addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
-                spinner.setAdapter(addressAdapter);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
-
 
     }
 }

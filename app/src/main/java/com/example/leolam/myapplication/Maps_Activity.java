@@ -46,15 +46,13 @@ import java.util.List;
 
 import static android.os.Build.*;
 
-//TODO: Remove unneeded comments
+
 public class Maps_Activity extends FragmentActivity implements OnMapReadyCallback {
 
-    private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12;
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 13;
     private GoogleMap mMap;
     ArrayList markerPoints= new ArrayList();
     private Location location;
-    Polyline line;
     double destLat;
     double destLong;
     String buildName;
@@ -73,12 +71,10 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
 
         Button navigateButton = (Button) findViewById(R.id.navigateButton);
         navigateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
+         @Override
             @TargetApi(Build.VERSION_CODES.M)
             public void onClick(View view) {
-
                 ActivityCompat.requestPermissions(Maps_Activity.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
-
                 Intent signup = new Intent(Maps_Activity.this, LocationActivity.class);
                 signup.putExtra("LATITUDE", destLat);
                 signup.putExtra("LONGITUDE", destLong);
@@ -92,11 +88,6 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSION_ACCESS_FINE_LOCATION);
-        }
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         String provider = lm.getBestProvider(new Criteria(), true);
         location = (Location) lm.getLastKnownLocation(provider);
@@ -115,11 +106,7 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
         }
         markerPoints.add(origin);
         markerPoints.add(dest);
-
-
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 15.0f));
-
-
 
         // Add new marker to the Google Map Android API V2
         mMap.addMarker(new MarkerOptions().position(origin).title("Starting"));
@@ -132,27 +119,19 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
 
             // Getting URL to the Google Directions API=
             String url = getDirectionsUrl(origin, dest);
-            //String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+origin,dest + "&key=" + MY_API_KEY;
 
             DownloadTask downloadTask = new DownloadTask();
 
             // Start downloading json data from Google Directions API
             downloadTask.execute(url);
         }
-
-
-
-
     }
 
 
     private class DownloadTask extends AsyncTask<String, Void, String> {
-
         @Override
         protected String doInBackground(String... url) {
-
             String data = "";
-
             try {
                 data = downloadUrl(url[0]);
             } catch (Exception e) {
@@ -164,24 +143,19 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-
             ParserTask parserTask = new ParserTask();
-
-
             parserTask.execute(result);
 
         }
     }
-
+    // Calls parser to get lat and long from Google map API
     private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
 
         // Parsing the data in non-ui thread
         @Override
         protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
-
             JSONObject jObject;
             List<List<HashMap<String, String>>> routes = null;
-
             try {
                 jObject = new JSONObject(jsonData[0]);
                 DirectionsJSONParser parser = new DirectionsJSONParser();
@@ -193,7 +167,7 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
             return routes;
         }
 
-
+        // calculates and draws polyline
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
             ArrayList points = null;
@@ -203,24 +177,16 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
             points = new ArrayList();
             lineOptions = new PolylineOptions();
             for (int i = 0; i < result.size(); i++) {
-
                 List<HashMap<String, String>> path = result.get(i);
-
                 for (int j = 0; j < path.size(); j++) {
                     HashMap<String, String> point = path.get(j);
 
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
                     LatLng position = new LatLng(lat, lng);
-
                     points.add(position);
                 }
-
-
-
             }
-
-// Drawing polyline in the Google Map for the i-th route
             lineOptions.addAll(points);
             lineOptions.width(12);
             lineOptions.color(Color.RED);
@@ -228,32 +194,22 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
             lineOptions.visible(true);
             mMap.addPolyline(lineOptions);
         }
-
-
     }
 
     private String getDirectionsUrl(LatLng origin, LatLng dest) {
-
         // Origin of route
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-
         // Destination of route
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-
         // Sensor enabled
         String sensor = "sensor=false";
         String mode = "mode=walking";
-
         // Building the parameters to the web service
         String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode;
-
         // Output format
         String output = "json";
-
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=AIzaSyAkRBwjgQhb-BRyGsZuv91FTZcq0Dzd3DA";
-
-
         return url;
     }
 
@@ -263,27 +219,18 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
         HttpURLConnection urlConnection = null;
         try {
             URL url = new URL(strUrl);
-
             urlConnection = (HttpURLConnection) url.openConnection();
-
             urlConnection.connect();
-
             iStream = urlConnection.getInputStream();
-
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-
             StringBuffer sb = new StringBuffer();
-
             String line = "";
             while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
-
             data = sb.toString();
             data = sb.toString();
-
             br.close();
-
         } catch (Exception e) {
             Log.d("Exception", e.toString());
         } finally {

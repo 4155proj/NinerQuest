@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -35,12 +36,12 @@ import java.util.List;
 
 public class BuildingListActivity extends AppCompatActivity {
 
-    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 55;
+    private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12;
     private double selectedLat = 0.0;
     private double selectedLong = 0.0;
-    private String buildName = "";
 
     private ListView listview;
+
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference getmDatabase = database.getReference();
@@ -49,23 +50,19 @@ public class BuildingListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSION_ACCESS_FINE_LOCATION);
+        }
         setContentView(R.layout.activity_building__list);
-
         Button StartNavPage = (Button) findViewById(R.id.StartNavPage);
-
         StartNavPage.setOnClickListener(new View.OnClickListener() {
             @Override
             @TargetApi(Build.VERSION_CODES.M)
             public void onClick(View view) {
-
-                ActivityCompat.requestPermissions(BuildingListActivity.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
-
                 Intent signup = new Intent(BuildingListActivity.this, Maps_Activity.class);
-
                 signup.putExtra("LATITUDE", selectedLat);
                 signup.putExtra("LONGITUDE", selectedLong);
-                signup.putExtra("BuildingName", buildName);
                 startActivity(signup);
             }
 
@@ -103,30 +100,23 @@ public class BuildingListActivity extends AppCompatActivity {
                 ArrayAdapter<String> addressAdapter = new ArrayAdapter<String>(BuildingListActivity.this, android.R.layout.simple_spinner_item, BuildingList);
                 final ArrayAdapter<Double> addressAdapter2 = new ArrayAdapter<Double>(BuildingListActivity.this, android.R.layout.simple_list_item_1, Lat);
                 final ArrayAdapter<Double> addressAdapter3 = new ArrayAdapter<Double>(BuildingListActivity.this, android.R.layout.simple_list_item_2, Long);
-
                 listview.setAdapter(addressAdapter);
-
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                         view.setSelected(true);
                         String selectedFromList = (String)(listview.getItemAtPosition(position));
-
-                         buildName = (String ) (addressAdapter.getItem(position));
+                        //Grabs lat and long from the database
                          selectedLat = (Double) (addressAdapter2.getItem(position));
                          selectedLong = (Double) (addressAdapter3.getItem(position));
-
                     }
-
                 });
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
-
     }
 }
 

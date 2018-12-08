@@ -54,10 +54,6 @@
             android:name=".Activities.CreateEventsActivity"
             android:label="@string/title_activity_create_events"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".map_main"
-            android:label="@string/title_activity_map_main"
-            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

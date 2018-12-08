@@ -14,7 +14,6 @@ public class ContactActivity extends AppCompatActivity {
     private EditText mEditTextSubject;
     private EditText mEditTextMessage;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,13 +24,14 @@ public class ContactActivity extends AppCompatActivity {
 
         Button buttonsend = findViewById(R.id.button_send);
         buttonsend.setOnClickListener(new View.OnClickListener() {
+            // button activation to begin an email client of choice
             @Override
             public void onClick(View v) {
                 sendMail();
             }
         });
     }
-
+    // Takes text from app and transfers to the email client of your choice
     private void sendMail(){
         String subject = mEditTextSubject.getText().toString();
         String message = mEditTextMessage.getText().toString();

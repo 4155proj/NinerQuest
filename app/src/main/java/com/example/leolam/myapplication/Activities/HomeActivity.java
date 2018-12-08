@@ -14,7 +14,7 @@ import com.example.leolam.myapplication.Maps_Activity;
 import com.example.leolam.myapplication.R;
 import com.example.leolam.myapplication.SceneFormExample.LocationActivity;
 
-//TODO: OnClickListener https://stackoverflow.com/questions/25905086/multiple-buttons-onclicklistener-android
+
 public class HomeActivity extends AppCompatActivity {
 
     public static final int HOME_CAMERA_REQUEST = 100;
@@ -31,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
         ImageView BuildingNavigationButton = findViewById(R.id.imageView2);
 
 
-        //Changed to make merge easier.
+        // Listeners for all the buttons on page and the redirecting activities
         FreeRoamButton.setOnClickListener(view -> {
             //Intent signup = new Intent(HomeActivity.this, LocationActivity.class);
             Intent signup = new Intent(HomeActivity.this, AR_Page_Activity.class);
@@ -59,7 +59,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    //TODO: Consider removing or moving to different class.
+    // request permissions of the camera
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
