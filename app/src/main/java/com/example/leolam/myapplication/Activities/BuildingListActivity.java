@@ -36,7 +36,6 @@ import java.util.List;
 public class BuildingListActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 55;
-    static final int REQUEST_IMAGE_CAPTURE = 98;
     private double selectedLat = 0.0;
     private double selectedLong = 0.0;
     private String buildName = "";
@@ -129,33 +128,5 @@ public class BuildingListActivity extends AppCompatActivity {
         });
 
     }
-
-    //Ask Permission to Use Camera
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CAMERA: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                    }*/
-
-                }
-                else {
-
-                    // permission denied
-
-                }
-                return;
-            }
-
-        }
-    }
-
 }
 

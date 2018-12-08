@@ -1,123 +1,81 @@
 package com.example.leolam.myapplication.Activities;
 
-import android.Manifest;
-import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.leolam.myapplication.Maps_Activity;
 import com.example.leolam.myapplication.R;
 import com.example.leolam.myapplication.SceneFormExample.LocationActivity;
-import com.example.leolam.myapplication.map_main;
-import com.google.ar.sceneform.ux.ArFragment;
 
+//TODO: OnClickListener https://stackoverflow.com/questions/25905086/multiple-buttons-onclicklistener-android
 public class HomeActivity extends AppCompatActivity {
 
-    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 55;
-    private ArFragment fragment;
-    static final int REQUEST_IMAGE_CAPTURE = 98;
-    // THIS IS A TEST TO SEE IF MERGE WORKS OK!
+    public static final int HOME_CAMERA_REQUEST = 100;
+    public static final int REQUEST_IMAGE_CAPTURE = 200;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        ImageView Free_Roam = findViewById(R.id.imageView4);
-        ImageView Events = findViewById(R.id.imageView7);
-        ImageView Contact = findViewById(R.id.imageView8);
-        ImageView Map = findViewById(R.id.imageView6);
-        ImageView Navigation = findViewById(R.id.imageView2);
-        //fragment = (ArFragment)
-              // getSupportFragmentManager().findFragmentById(R.id.sceneform_fragment);
+        ImageView FreeRoamButton = findViewById(R.id.imageView4);
+        ImageView EventsButton = findViewById(R.id.imageView7);
+        ImageView ContactUsButton = findViewById(R.id.imageView8);
+        ImageView MapButton = findViewById(R.id.imageView6);
+        ImageView BuildingNavigationButton = findViewById(R.id.imageView2);
 
 
-        //Free Roam Button to AR Page
-        Free_Roam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            @TargetApi(Build.VERSION_CODES.M)
-            public void onClick(View view) {
+        FreeRoamButton.setOnClickListener(view -> {
 
-                Intent signup = new Intent(HomeActivity.this, LocationActivity.class);
-                startActivity(signup);
-
-                //ActivityCompat.requestPermissions(HomeActivity.this,
-                       //new String[]{Manifest.permission.CAMERA},
-                       // MY_PERMISSIONS_REQUEST_CAMERA);//
-            }
-
+            Intent signup = new Intent(HomeActivity.this, LocationActivity.class);
+            startActivity(signup);
         });
 
-
-
-
-        //Navigation Button to Building List
-        Navigation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent signup = new Intent(HomeActivity.this, BuildingListActivity.class);
-                startActivity(signup);
-            }
+        BuildingNavigationButton.setOnClickListener(view -> {
+            Intent signup = new Intent(HomeActivity.this, BuildingListActivity.class);
+            startActivity(signup);
         });
 
-        //EventsActivity Button to EventsActivity Page
-        Events.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent signup = new Intent(HomeActivity.this, EventsActivity.class);
-                startActivity(signup);
-            }
+        EventsButton.setOnClickListener(view -> {
+            Intent signup = new Intent(HomeActivity.this, EventsActivity.class);
+            startActivity(signup);
         });
 
-        //ContactActivity Button to ContactActivity Page
-        Contact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent signup = new Intent(HomeActivity.this, ContactActivity.class);
-                startActivity(signup);
-            }
+        ContactUsButton.setOnClickListener(view -> {
+            Intent signup = new Intent(HomeActivity.this, ContactActivity.class);
+            startActivity(signup);
         });
 
-        //Map Button to Map_main page
-        Map.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent signup = new Intent(HomeActivity.this, Maps_Activity.class);
-                startActivity(signup);
-            }
+        MapButton.setOnClickListener(view -> {
+            Intent signup = new Intent(HomeActivity.this, Maps_Activity.class);
+            startActivity(signup);
         });
-
-
     }
 
-    //Ask Permission to Use Camera
+    //TODO: Consider removing or moving to different class.
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CAMERA: {
+            if (requestCode ==  HOME_CAMERA_REQUEST) {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }
-
                 } else {
-
-                    // permission denied
-
+                    Context context = getApplicationContext();
+                    CharSequence text = "Camera Request was denied. Cannot continue.";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 }
-                return;
             }
-
-        }
     }
 }
