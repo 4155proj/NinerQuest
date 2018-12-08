@@ -32,8 +32,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
         FreeRoamButton.setOnClickListener(view -> {
-
-            Intent signup = new Intent(HomeActivity.this, LocationActivity.class);
+            //Intent signup = new Intent(HomeActivity.this, LocationActivity.class);
+            Intent signup = new Intent(HomeActivity.this, AR_Page_Activity.class);
             startActivity(signup);
         });
 
