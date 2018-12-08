@@ -31,6 +31,7 @@ public class HomeActivity extends AppCompatActivity {
         ImageView BuildingNavigationButton = findViewById(R.id.imageView2);
 
 
+        //Changed to make merge easier.
         FreeRoamButton.setOnClickListener(view -> {
             //Intent signup = new Intent(HomeActivity.this, LocationActivity.class);
             Intent signup = new Intent(HomeActivity.this, AR_Page_Activity.class);
