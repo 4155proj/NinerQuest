@@ -1,10 +1,12 @@
 package com.example.leolam.myapplication.Activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -19,6 +21,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public static final int HOME_CAMERA_REQUEST = 100;
     public static final int REQUEST_IMAGE_CAPTURE = 200;
+    private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,9 @@ public class HomeActivity extends AppCompatActivity {
         ImageView ContactUsButton = findViewById(R.id.imageView8);
         ImageView MapButton = findViewById(R.id.imageView6);
         ImageView BuildingNavigationButton = findViewById(R.id.imageView2);
+
+        //ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.CAMERA}, HOME_CAMERA_REQUEST);
+        ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_ACCESS_FINE_LOCATION);
 
 
         FreeRoamButton.setOnClickListener(view -> {
@@ -59,7 +65,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     //TODO: Consider removing or moving to different class.
-    @Override
+/*    @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
             if (requestCode ==  HOME_CAMERA_REQUEST) {
@@ -77,5 +83,5 @@ public class HomeActivity extends AppCompatActivity {
                     toast.show();
                 }
             }
-    }
+    }*/
 }
